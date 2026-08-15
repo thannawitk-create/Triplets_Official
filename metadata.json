@@ -1,0 +1,8 @@
+{
+  "name": "Remix TRIPLETS Band",
+  "description": "Official website \u0026 fan hub for TRIPLETS Band - News, Live Tour Schedule, Music Player, and Band Profiles",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
