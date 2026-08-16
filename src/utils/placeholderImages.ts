@@ -1,4 +1,5 @@
 // High quality SVG Data URLs for blank design template mode
+import type React from 'react';
 
 const createSvgDataUrl = (
   width: number,
@@ -83,3 +84,31 @@ export const isPlaceholderImage = (url: string | undefined): boolean => {
   if (!url) return true;
   return url.startsWith('data:image/svg+xml') && url.includes('+%20%E0%B8%84%E0%B8%A5%E0%B8%B4%E0%B8%81%E0%B9%80%E0%B8%9E%E0%B8%B8%E0%B9%88%E0%B8%AD%E0%B8%AD%E0%B8%B1%E0%B8%9B%E0%B9%82%E0%B8%AB%E0%B8%A5%E0%B8%94');
 };
+
+/**
+ * Handle img tag load failure: try alternate extension or fallback to blank SVG placeholder
+ */
+export const handleImageLoadError = (
+  e: React.SyntheticEvent<HTMLImageElement, Event>,
+  key: keyof typeof BLANK_PLACEHOLDER_IMAGES
+) => {
+  const target = e.currentTarget;
+  const currentSrc = target.src;
+
+  // If already placeholder, prevent infinite loop
+  if (currentSrc.startsWith('data:image/svg+xml')) return;
+
+  // Try alternate extensions if static image
+  if (currentSrc.endsWith('.png')) {
+    target.src = currentSrc.replace('.png', '.jpg');
+    return;
+  }
+  if (currentSrc.endsWith('.jpg') && key === 'bandLogo') {
+    target.src = currentSrc.replace('.jpg', '.png');
+    return;
+  }
+
+  // Fallback to SVG Placeholder
+  target.src = BLANK_PLACEHOLDER_IMAGES[key] || BLANK_PLACEHOLDER_IMAGES.heroBanner;
+};
+

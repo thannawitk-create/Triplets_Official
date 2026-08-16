@@ -3,6 +3,7 @@ import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Disc, Music, File
 import { Song } from '../types';
 import { useSongs } from '../context/SongContext';
 import { useBandImages, BandImageMap } from '../context/ImageContext';
+import { handleImageLoadError } from '../utils/placeholderImages';
 
 interface MusicPlayerSectionProps {
   // Optional props retained for backwards compatibility
@@ -164,6 +165,7 @@ export const MusicPlayerSection: React.FC<MusicPlayerSectionProps> = () => {
                 src={activeSlide.url}
                 alt={activeSlide.title}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, 'albumCover')}
                 className={`w-full h-full object-cover transition-all duration-700 ${isPlaying ? 'scale-105' : 'scale-100'}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-neutral-950/40 opacity-90"></div>

@@ -3,6 +3,7 @@ import { Music, Users, Heart, Menu, X, Volume2, Camera, Lock, ShieldCheck, Layou
 import { audioSynth } from '../utils/audioSynth';
 import { useBandImages } from '../context/ImageContext';
 import { useSongs } from '../context/SongContext';
+import { handleImageLoadError } from '../utils/placeholderImages';
 
 interface NavbarProps {
   activeSection: string;
@@ -69,6 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection 
             <img 
               src={images.bandLogo} 
               alt={`${bandInfo.name} Logo`} 
+              onError={(e) => handleImageLoadError(e, 'bandLogo')}
               className="w-full h-full object-contain filter drop-shadow-md"
             />
           </div>

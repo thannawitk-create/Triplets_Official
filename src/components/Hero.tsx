@@ -2,6 +2,7 @@ import React from 'react';
 import { Play, Sparkles, ChevronRight, Activity, Heart, Camera, Layout } from 'lucide-react';
 import { useBandImages, BandImageMap } from '../context/ImageContext';
 import { useSongs } from '../context/SongContext';
+import { handleImageLoadError } from '../utils/placeholderImages';
 
 interface HeroProps {
   onNavigateSection: (sectionId: string) => void;
@@ -52,6 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
           src={images.heroBanner}
           alt={`${bandInfo.name} Stage`}
           referrerPolicy="no-referrer"
+          onError={(e) => handleImageLoadError(e, 'heroBanner')}
           className="w-full h-full object-cover object-center filter brightness-[0.25] contrast-125 scale-105 cursor-pointer"
           onClick={() => {
             if (isAdmin) openImageEditor('heroBanner');
@@ -143,6 +145,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
               <img
                 src={images.bandLogo}
                 alt={`${bandInfo.name} Official Logo`}
+                onError={(e) => handleImageLoadError(e, 'bandLogo')}
                 onClick={() => {
                   if (isAdmin) openImageEditor('bandLogo');
                 }}
@@ -169,6 +172,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                 src={images.win}
                 alt={winMember.nameEng}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, 'win')}
                 onClick={() => {
                   if (isAdmin) openImageEditor('win');
                 }}
@@ -205,6 +209,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                 src={images.mona}
                 alt={monaMember.nameEng}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, 'mona')}
                 onClick={() => {
                   if (isAdmin) openImageEditor('mona');
                 }}
@@ -242,6 +247,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                 src={images.ten}
                 alt={tenMember.nameEng}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, 'ten')}
                 onClick={() => {
                   if (isAdmin) openImageEditor('ten');
                 }}
@@ -277,6 +283,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                 src={images.tiger}
                 alt={tigerMember.nameEng}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, 'tiger')}
                 onClick={() => {
                   if (isAdmin) openImageEditor('tiger');
                 }}
@@ -318,6 +325,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                   src={images.albumCover}
                   alt="Album Cover"
                   referrerPolicy="no-referrer"
+                  onError={(e) => handleImageLoadError(e, 'albumCover')}
                   onClick={() => {
                     if (isAdmin) openImageEditor('albumCover');
                   }}
@@ -368,6 +376,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigateSection }) => {
                   src={images.bandSilhouette}
                   alt="Band Silhouette"
                   referrerPolicy="no-referrer"
+                  onError={(e) => handleImageLoadError(e, 'bandSilhouette')}
                   onClick={() => {
                     if (isAdmin) openImageEditor('bandSilhouette');
                   }}

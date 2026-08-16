@@ -26,6 +26,7 @@ import { useBandImages } from '../context/ImageContext';
 import { useSongs, DEFAULT_BOOKING_CONTACT, DEFAULT_QUICK_LINKS } from '../context/SongContext';
 import { CustomContactItem, FooterQuickLink } from '../types';
 import { BAND_INFO } from '../data/bandData';
+import { handleImageLoadError } from '../utils/placeholderImages';
 
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
@@ -296,6 +297,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection }) => {
                   <img 
                     src={images.bandLogo} 
                     alt="TRIPLETS Logo" 
+                    onError={(e) => handleImageLoadError(e, 'bandLogo')}
                     className="w-full h-full object-contain filter drop-shadow-md"
                   />
                 </div>

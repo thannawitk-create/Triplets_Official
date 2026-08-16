@@ -24,19 +24,19 @@ export interface SlideshowItem {
 }
 
 export const DEFAULT_IMAGES: BandImageMap = {
-  bandLogo: BLANK_PLACEHOLDER_IMAGES.bandLogo,
-  win: BLANK_PLACEHOLDER_IMAGES.win,
-  ten: BLANK_PLACEHOLDER_IMAGES.ten,
-  tiger: BLANK_PLACEHOLDER_IMAGES.tiger,
-  mona: BLANK_PLACEHOLDER_IMAGES.mona,
-  heroBanner: BLANK_PLACEHOLDER_IMAGES.heroBanner,
-  albumCover: BLANK_PLACEHOLDER_IMAGES.albumCover,
-  bandSilhouette: BLANK_PLACEHOLDER_IMAGES.bandSilhouette,
+  bandLogo: '/images/band_logo.png',
+  win: '/images/win.jpg',
+  ten: '/images/ten.jpg',
+  tiger: '/images/tiger.jpg',
+  mona: '/images/mona.jpg',
+  heroBanner: '/images/hero_banner.jpg',
+  albumCover: '/images/album_cover.jpg',
+  bandSilhouette: '/images/hero_banner.jpg',
 };
 
-const STORAGE_KEY = 'triplets_custom_band_images_blank_v1';
-const CUSTOM_SLIDES_STORAGE_KEY = 'triplets_custom_slideshow_items_blank_v1';
-const HIDDEN_SLIDES_STORAGE_KEY = 'triplets_hidden_slideshow_ids_blank_v1';
+const STORAGE_KEY = 'triplets_custom_band_images_v6';
+const CUSTOM_SLIDES_STORAGE_KEY = 'triplets_custom_slideshow_items_v6';
+const HIDDEN_SLIDES_STORAGE_KEY = 'triplets_hidden_slideshow_ids_v6';
 
 // Clear legacy storage keys with obsolete hashed bundle paths
 try {
@@ -47,6 +47,9 @@ try {
     'triplets_custom_band_images_v3',
     'triplets_custom_band_images_v4',
     'triplets_custom_band_images_v5',
+    'triplets_custom_band_images_blank_v1',
+    'triplets_custom_slideshow_items_blank_v1',
+    'triplets_hidden_slideshow_ids_blank_v1',
   ];
   legacyKeys.forEach(k => localStorage.removeItem(k));
 } catch {

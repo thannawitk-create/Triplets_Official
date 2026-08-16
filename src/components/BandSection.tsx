@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Users, Music, Award, Camera } from 'lucide-react';
 import { useBandImages, BandImageMap } from '../context/ImageContext';
 import { useSongs } from '../context/SongContext';
+import { handleImageLoadError } from '../utils/placeholderImages';
 
 export const BandSection: React.FC = () => {
   const [activeMemberIndex, setActiveMemberIndex] = useState(0);
@@ -71,6 +72,7 @@ export const BandSection: React.FC = () => {
                 src={images[activeImageKey]}
                 alt={activeMember.nameEng}
                 referrerPolicy="no-referrer"
+                onError={(e) => handleImageLoadError(e, activeImageKey)}
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 filter brightness-95"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/50 to-transparent"></div>
@@ -168,6 +170,7 @@ export const BandSection: React.FC = () => {
                     src={images[imgKey]}
                     alt={member.nameEng}
                     referrerPolicy="no-referrer"
+                    onError={(e) => handleImageLoadError(e, imgKey)}
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-80"></div>
