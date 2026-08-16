@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { Song, BandTemplateData, SavedTemplateMeta, BandMember } from '../types';
+import { Song, BandTemplateData, SavedTemplateMeta, BandMember, BookingContactInfo, FooterQuickLink, CustomContactItem } from '../types';
 import { SONGS as DEFAULT_SONGS, BAND_INFO as DEFAULT_BAND_INFO, ALBUM_INFO as DEFAULT_ALBUM_INFO, MEMBERS as DEFAULT_MEMBERS } from '../data/bandData';
 import { BLANK_STARTER_SONGS, BLANK_BAND_INFO, BLANK_ALBUM_INFO, BLANK_MEMBERS, PRESET_TEMPLATES } from '../data/templatePresets';
 import { audioSynth } from '../utils/audioSynth';
@@ -20,21 +20,33 @@ export const ADMIN_CORRECT_PIN = '120123';
 
 export type RepeatMode = 'all' | 'one' | 'off';
 
-export interface BookingContactInfo {
-  title: string;
-  phone: string;
-  email: string;
-  line: string;
-}
+export const DEFAULT_QUICK_LINKS: FooterQuickLink[] = [
+  { id: 'ql-1', label: 'หน้าหลัก (Home)', sectionId: 'hero' },
+  { id: 'ql-2', label: 'สมาชิกวง TRIPLETS', sectionId: 'band' },
+  { id: 'ql-3', label: 'ฟังเพลงในอัลบั้ม "หากวันนั้น..."', sectionId: 'music' },
+  { id: 'ql-4', label: 'มุมแฟนคลับ (Fan Zone)', sectionId: 'fanzone' },
+];
 
 export type BandInfoType = typeof DEFAULT_BAND_INFO;
 export type AlbumInfoType = typeof DEFAULT_ALBUM_INFO;
 
-const DEFAULT_BOOKING_CONTACT: BookingContactInfo = {
+export const DEFAULT_BOOKING_CONTACT: BookingContactInfo = {
   title: 'ติดต่องานแสดง & สปอนเซอร์',
+  isVisible: true,
   phone: DEFAULT_BAND_INFO.bookingContact.phone,
   email: DEFAULT_BAND_INFO.bookingContact.email,
   line: DEFAULT_BAND_INFO.bookingContact.line,
+  customItems: [],
+  quickLinksTitle: 'ลิงก์ด่วน (QUICK LINKS)',
+  quickLinks: DEFAULT_QUICK_LINKS,
+  isQuickLinksVisible: true,
+  bioText: DEFAULT_BAND_INFO.bio.slice(0, 180),
+  socials: {
+    facebook: DEFAULT_BAND_INFO.socials.facebook,
+    instagram: DEFAULT_BAND_INFO.socials.instagram,
+    youtube: DEFAULT_BAND_INFO.socials.youtube,
+    tiktok: DEFAULT_BAND_INFO.socials.tiktok,
+  },
 };
 
 interface SongContextType {
@@ -617,6 +629,7 @@ export const SongProvider: React.FC<{ children: React.ReactNode }> = ({ children
       members,
       images: currentImages,
       slideshowList: slideshowItems,
+      bookingContact,
       songs,
     };
 
@@ -660,6 +673,9 @@ export const SongProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     if (templateData.slideshowList && updateSlideshowCallback) {
       updateSlideshowCallback(templateData.slideshowList);
+    }
+    if (templateData.bookingContact) {
+      updateBookingContact(templateData.bookingContact);
     }
   };
 

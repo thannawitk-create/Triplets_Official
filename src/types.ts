@@ -2,6 +2,39 @@
 
 export type MemberRole = 'Lead Vocal' | 'Bass' | 'Drums' | 'Guest Vocal';
 
+export interface CustomContactItem {
+  id: string;
+  label: string;
+  value: string;
+  type?: 'phone' | 'email' | 'line' | 'other';
+}
+
+export interface FooterQuickLink {
+  id: string;
+  label: string;
+  sectionId: string;
+  customUrl?: string;
+}
+
+export interface BookingContactInfo {
+  title: string;
+  isVisible?: boolean;
+  phone?: string;
+  email?: string;
+  line?: string;
+  customItems?: CustomContactItem[];
+  quickLinksTitle?: string;
+  quickLinks?: FooterQuickLink[];
+  isQuickLinksVisible?: boolean;
+  bioText?: string;
+  socials?: {
+    facebook?: string;
+    instagram?: string;
+    youtube?: string;
+    tiktok?: string;
+  };
+}
+
 export interface BandMember {
   id: string;
   nameThai: string;
@@ -143,6 +176,7 @@ export interface BandTemplateData {
     subtitle: string;
     url: string;
   }[];
+  bookingContact?: BookingContactInfo;
   songs: Song[];
 }
 
