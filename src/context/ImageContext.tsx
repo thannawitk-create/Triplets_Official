@@ -34,9 +34,23 @@ export const DEFAULT_IMAGES: BandImageMap = {
   bandSilhouette: IMAGES.bandSilhouette,
 };
 
-const STORAGE_KEY = 'triplets_custom_band_images';
-const CUSTOM_SLIDES_STORAGE_KEY = 'triplets_custom_slideshow_items';
-const HIDDEN_SLIDES_STORAGE_KEY = 'triplets_hidden_slideshow_ids';
+const STORAGE_KEY = 'triplets_custom_band_images_v5';
+const CUSTOM_SLIDES_STORAGE_KEY = 'triplets_custom_slideshow_items_v5';
+const HIDDEN_SLIDES_STORAGE_KEY = 'triplets_hidden_slideshow_ids_v5';
+
+// Clear legacy storage keys with obsolete hashed bundle paths
+try {
+  const legacyKeys = [
+    'triplets_custom_band_images',
+    'triplets_custom_band_images_v1',
+    'triplets_custom_band_images_v2',
+    'triplets_custom_band_images_v3',
+    'triplets_custom_band_images_v4',
+  ];
+  legacyKeys.forEach(k => localStorage.removeItem(k));
+} catch {
+  // Ignored
+}
 
 interface ImageContextType {
   images: BandImageMap;
@@ -112,11 +126,19 @@ export const ImageProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const cleaned: Partial<BandImageMap> = {};
         for (const key in parsed) {
           const val = parsed[key as keyof BandImageMap];
-          // Replace stale /src/ paths or old broken unsplash URLs with default imported asset URL
-          if (typeof val === 'string' && (val.startsWith('/src/') || val.includes('unsplash.com') || !val.trim())) {
-            cleaned[key as keyof BandImageMap] = DEFAULT_IMAGES[key as keyof BandImageMap];
-          } else if (val) {
+          // Keep only user-uploaded Base64 data URLs or valid external URLs;
+          // Discard any stale bundle paths, broken strings or outdated unsplash links
+          if (
+            typeof val === 'string' &&
+            (val.startsWith('data:image/') ||
+              val.startsWith('http://') ||
+              val.startsWith('https://') ||
+              val.startsWith('/images/')) &&
+            !val.includes('unsplash.com')
+          ) {
             cleaned[key as keyof BandImageMap] = val;
+          } else {
+            cleaned[key as keyof BandImageMap] = DEFAULT_IMAGES[key as keyof BandImageMap];
           }
         }
         return { ...DEFAULT_IMAGES, ...cleaned };

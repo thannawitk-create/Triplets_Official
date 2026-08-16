@@ -395,6 +395,7 @@ export const ImageEditorModal: React.FC = () => {
                 <input
                   type="file"
                   ref={fileInputRef}
+                  onClick={(e) => { (e.target as HTMLInputElement).value = ''; }}
                   onChange={handleFileUpload}
                   accept="image/*"
                   className="hidden"
@@ -402,16 +403,45 @@ export const ImageEditorModal: React.FC = () => {
 
                 <div
                   onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files?.[0];
+                    if (file && file.type.startsWith('image/')) {
+                      const pseudoEvent = { target: { files: [file] } } as unknown as React.ChangeEvent<HTMLInputElement>;
+                      handleFileUpload(pseudoEvent);
+                    }
+                  }}
                   className="border-2 border-dashed border-neutral-700 hover:border-red-500 bg-neutral-950/80 hover:bg-neutral-950 rounded-xl p-6 text-center cursor-pointer transition-all space-y-2 group"
                 >
                   <div className="w-12 h-12 rounded-full bg-neutral-900 border border-neutral-800 group-hover:border-red-500/50 flex items-center justify-center mx-auto text-neutral-400 group-hover:text-red-400 transition-colors">
                     <Upload className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-white">คลิกเพื่อเลือกไฟล์รูปภาพจากอุปกรณ์ของคุณ</p>
-                    <p className="text-[10px] text-neutral-400 mt-1">รองรับไฟล์ JPG, PNG, WEBP, GIF (สูงสุด 8MB)</p>
+                    <p className="text-xs font-bold text-white">คลิกหรือลากวางไฟล์รูปภาพจากอุปกรณ์ของคุณ (Drag & Drop)</p>
+                    <p className="text-[10px] text-neutral-400 mt-1">รองรับไฟล์ JPG, PNG, WEBP, GIF (ระบบย่อขนาดอัตโนมัติ)</p>
                   </div>
                 </div>
+
+                {previewUrl && (
+                  <div className="bg-emerald-950/40 border border-emerald-800/60 rounded-xl p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img src={previewUrl} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-emerald-700" />
+                      <div>
+                        <div className="text-xs font-bold text-emerald-300">เลือกรูปภาพเรียบร้อยแล้ว</div>
+                        <div className="text-[10px] text-emerald-400/80">กดปุ่ม "ใช้รูปนี้ทันที" ด้านล่างเพื่อแสดงผลบนเว็บ</div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleSave}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>บันทึกรูป</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 
